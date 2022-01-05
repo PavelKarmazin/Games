@@ -3,7 +3,7 @@ import sys
 import random
 pygame.init()
 
-sc = pygame.display.set_mode((600,800))
+sc = pygame.display.set_mode((700,800))
 pygame.display.set_caption("Блоки")
 pygame.display.flip()
 
@@ -45,6 +45,8 @@ def game():
     k = False
     d = False
     x = 300
+    lol = True
+
 
     pygame.display.update()
     ### стартовые координаты метеоров и скорость
@@ -104,22 +106,33 @@ def game():
             if defs:
                 sc.blit(protect1, [x-20, 680])
 
-            sc.blit(cometa, [5, y1])
-            sc.blit(cometa, [105, y2])
-            sc.blit(cometa, [205, y3])
-            sc.blit(cometa, [305, y4])
-            sc.blit(cometa, [405, y5])
-            sc.blit(cometa, [505, y6])
+            sc.blit(cometa, [15, y1])
+            sc.blit(cometa, [115, y2])
+            sc.blit(cometa, [225, y3])
+            sc.blit(cometa, [335, y4])
+            sc.blit(cometa, [445, y5])
+            sc.blit(cometa, [555, y6])
+            pygame.draw.line(sc, RED, (105, 0), (105, 800), 5)
+            pygame.draw.line(sc, RED, (115, 0), (115, 800), 5)
+            pygame.draw.line(sc, RED, (200, 0), (200, 800), 5)
+            pygame.draw.line(sc, RED, (225, 0), (225, 800), 5)
+            pygame.draw.line(sc, RED, (315, 0), (315, 800), 5)
+            pygame.draw.line(sc, RED, (335, 0), (335, 800), 5)
+            pygame.draw.line(sc, RED, (430, 0), (430, 800), 5)
+            pygame.draw.line(sc, RED, (445, 0), (445, 800), 5)
+            pygame.draw.line(sc, RED, (540, 0), (540, 800), 5)
+            pygame.draw.line(sc, RED, (555, 0), (555, 800), 5)
+            pygame.draw.line(sc, RED, (650, 0), (650, 800), 5)
             pygame.display.update()
 
             ### проверка на крайний ряд, переброс с 1 на 6 дорожку и наоборот
             if x < 0:
-                x = 500
-            if x > 600:
+                x = 600
+            if x > 700:
                 x = 0
 
             ### столкновения и взаимодействия с ракетой
-            if x>=0 and x<100:
+            if x>=0 and x<105:
                 if yyy >= 700 and yyy-50 <=790:
                     k = False
                 if y1+125 >= 700 and y1 <= 790:
@@ -129,13 +142,13 @@ def game():
                         sp1 = random.randint(2, 4)
                     else:
                         game_over = True
-                elif a == 1:
+                elif a >=15 and a<=105:
                     for i in range(5):
                         sc.blit(boom, [5, y1])
                         pygame.display.update()
                     y1 = random.randint(-375, - 125)
                     a = 0
-            elif x>=100 and x<200:
+            elif x>=115 and x<200:
                 if yyy >= 700 and yyy-50 <=790:
                     k = False
                 if y2+125 >= 700 and y2 <= 790:
@@ -145,13 +158,13 @@ def game():
                         sp2 = random.randint(2, 4)
                     else:
                         game_over = True
-                elif a == 2:
+                elif a >=115 and a<=205:
                     for i in range(5):
                         sc.blit(boom, [105, y2])
                         pygame.display.update()
                     y2 = random.randint(-375, - 125)
                     a = 0
-            elif x>=200 and x<300:
+            elif x>=225 and x<315:
                 if yyy >= 700 and yyy-50 <=790:
                     k = False
                 if y3+125 >= 700 and y3 <= 790:
@@ -161,13 +174,13 @@ def game():
                         sp3 = random.randint(2, 4)
                     else:
                         game_over = True
-                elif a == 3:
+                elif a >225 and a<315:
                     for i in range(5):
                         sc.blit(boom, [205, y3])
                         pygame.display.update()
                     y3 = random.randint(-375, - 125)
                     a = 0
-            elif x>=300 and x<400:
+            elif x>=335 and x<430:
                 if yyy >= 700 and yyy-50 <=790:
                     k = False
                 if y4+125 >= 700 and y4 <= 790:
@@ -177,13 +190,13 @@ def game():
                         sp4 = random.randint(2, 4)
                     else:
                         game_over = True
-                elif a == 4:
+                elif a >335 and a<430:
                     for i in range(5):
                         sc.blit(boom, [305, y4])
                         pygame.display.update()
                     y4 = random.randint(-375, - 125)
                     a = 0
-            elif x>=400 and x<500:
+            elif x>=445 and x<540:
                 if yyy >= 700 and yyy-50 <=790:
                     k = False
                 if y5+125 >= 700 and y5 <= 790:
@@ -193,13 +206,13 @@ def game():
                         sp5 = random.randint(2, 4)
                     else:
                         game_over = True
-                elif a == 5:
+                elif a >445 and a<540:
                     for i in range(5):
                         sc.blit(boom, [405, y5])
                         pygame.display.update()
                     y5 = random.randint(-375, - 125)
                     a = 0
-            elif x>=500 and x<600:
+            elif x>=555 and x<650:
                 if yyy >= 700 and yyy-50 <=790:
                     k = False
                 if y6+125 >= 700 and y6 <= 790:
@@ -209,7 +222,7 @@ def game():
                         sp6 = random.randint(2, 4)
                     else:
                         game_over = True
-                elif a == 6:
+                elif a >555 and a<650:
                     for i in range(5):
                         sc.blit(boom, [505, y6])
                         pygame.display.update()
@@ -272,7 +285,7 @@ def game():
                                 pygame.draw.line(sc, RED, (x+50, 640), (x+50, 0), 3)
                                 pygame.display.update()
                                 a = 0
-                            a = x/100+1
+                            a = x+50
                             gun -= 1
                     elif event.key == pygame.K_p:
                         pause = True
@@ -290,29 +303,22 @@ def game():
                 y4 += sp4
                 y5 += sp5
                 y6 += sp6
+                keys = pygame.key.get_pressed()
+                if keys[pygame.K_LEFT]:
+                    x -= 5
+                if keys[pygame.K_RIGHT]:
+                    x += 5
                 pygame.display.update()
                 sc.blit(image, [0, 0])
-            if xGo == True:
-                x -= 5
-                countA += 1
-                if countA == 8:
-                    xGo = False
-                    countA = 0
-            if xGo1 == True:
-                x += 5
-                countB += 1
-                if countB == 8:
-                    xGo1 = False
-                    countB = 0
-
+  
         ### окончание игры
         elif game_over:
             sc.fill(BLACK)
             font = pygame.font.SysFont('stxingkai', 45)
             text1 = font.render("Вы проиграли, ваши очки: "+str(count), True, RED)
             text_rect = text1.get_rect()
-            text_x = 90
-            text_y = 400
+            text_x = 140
+            text_y = 375
             sc.blit(text1, [text_x, text_y])
             pygame.display.update()
             game_over = False
@@ -324,19 +330,19 @@ def game():
 ### меню игры
 def menu():
     ### кнопки
-    pygame.draw.rect(sc, GREEN, (175, 200, 225, 45))
+    pygame.draw.rect(sc, GREEN, (225, 200, 225, 45))
     font = pygame.font.SysFont('stxingkai', 35)
     text1 = font.render("Играть", True, RED)
     text_rect = text1.get_rect()
-    text_x = 245
+    text_x = 295
     text_y = 210
     sc.blit(text1, [text_x, text_y])
 
-    pygame.draw.rect(sc, GREEN, (175, 500, 225, 45))
+    pygame.draw.rect(sc, GREEN, (225, 500, 225, 45))
     font = pygame.font.SysFont('stxingkai', 35)
     text1 = font.render("Выйти", True, RED)
     text_rect = text1.get_rect()
-    text_x = 245
+    text_x = 295
     text_y = 510
     sc.blit(text1, [text_x, text_y])
     
@@ -351,7 +357,7 @@ def menu():
             ### проверка на нажатие кнокпи
             elif event.type == pygame.MOUSEBUTTONDOWN:
                 x_mouse, y_mouse = pygame.mouse.get_pos()
-                if x_mouse > 175 and x_mouse < 400:
+                if x_mouse > 225 and x_mouse < 450:
                     if y_mouse > 200 and y_mouse < 245:
                         game()
                     elif y_mouse > 500 and y_mouse < 545:

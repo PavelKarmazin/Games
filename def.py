@@ -9,9 +9,9 @@ pygame.init()
 sc = pygame.display.set_mode((1048,745))
 pygame.display.set_caption("монополия")
 pygame.display.flip()
-image = pygame.image.load('F:\PyGame/monopoly.jpg')
+image = pygame.image.load('F:\PyGame\png\monopoly.jpg')
 #списки значения которых перебираются в цикле while
-color = [(225, 0, 50), (0, 255, 0), (128,128,128), (0, 255, 0)]
+color = [(225, 0, 50), (0, 0, 255), (128,128,128), (0, 255, 0)]
 line = [1, 1, 1, 1]
 a = [0, 0, 0, 0]
 stop = [False, False, False, False]
@@ -26,10 +26,9 @@ BLUE = (0, 0, 225)
 BLACK = (0,0,0)
 GREY = (128,128,128)
 rand = 0
-yes = 0
-no = 0
 game_over = False
 query = 0
+
 
 pygame.draw.rect(sc, WHITE, (748, 0, 300, 745))
 # список координат
@@ -56,7 +55,12 @@ while True:
             pygame.quit()
             sys.exit(0)
             break
-        elif not game_over:
+        elif event.type == pygame.KEYDOWN and not game_over:
+            if event.key == pygame.K_LEFT:
+                yes = True
+            elif event.key == pygame.K_RIGHT:
+                yes = True
+        if not game_over:
             pygame.draw.rect(sc, WHITE, (295, 220, 140, 20))
             font = pygame.font.SysFont('stxingkai', 30)
             text1 = font.render("Кинуть кубик", True, BLACK)
@@ -67,10 +71,6 @@ while True:
             pygame.display.update()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 x_mouse, y_mouse = pygame.mouse.get_pos()
-                if x_mouse > 840 and x_mouse < 920 and y_mouse > 145 and y_mouse < 175:
-                    yes = 1
-                elif x_mouse > 935 and x_mouse < 1050 and y_mouse > 145 and y_mouse < 175:
-                    no = 1
                 if x_mouse > 295 and x_mouse < 435 and y_mouse > 220 and y_mouse < 240:
                     pygame.draw.rect(sc, WHITE, (345, 250, 30, 30))
                     rand = random.randint(1, 6)
@@ -103,7 +103,7 @@ while True:
                         pygame.draw.circle(sc, BLACK, (360, 258), 4)
                     pygame.display.update()
                     pygame.draw.rect(sc, WHITE, (748, 0, 300, 745))                   
-                    
+                        
                     if query == 4:
                         query = 0
                     i = query
@@ -134,82 +134,244 @@ while True:
                             x11[i], y1[i], x21[i] = 25, 35, 45
                             x12[i], y2[i], x22[i], line[i] = x12[i] - 62*rand, y2[i] - 62*rand, x22[i] - 62*rand, 2
                         elif a[i] >=20 and a[i]<30:
-                            if line[i] == 2:
-                                rand = a[i] - 20
-                                x11[i], y1[i], x21[i] = 50, 60, 70
-                            x12[i], y2[i], x22[i], line[i] = 60, 25, 60, 3
-                            x11[i], y1[i], x21[i] = x11[i] + 62*rand, y1[i] + 62*rand, x21[i] + 62*rand
+                                if line[i] == 2:
+                                    rand = a[i] - 20
+                                    x11[i], y1[i], x21[i] = 50, 60, 70
+                                x12[i], y2[i], x22[i], line[i] = 60, 25, 60, 3
+                                x11[i], y1[i], x21[i] = x11[i] + 62*rand, y1[i] + 62*rand, x21[i] + 62*rand
                         elif a[i] >= 30 and a[i]<40:
-                            if line[i] == 3:
-                                rand = a[i] - 30
-                                x12[i], y2[i], x22[i] = 75, 40, 75
-                            x11[i], y1[i], x21[i], line[i] = 675, 685, 695, 4
-                            x12[i], y2[i], x22[i] = x12[i] + 62*rand, y2[i] + 62*rand, x22[i] + 62*rand
-                        
+                                if line[i] == 3:
+                                    rand = a[i] - 30
+                                    x12[i], y2[i], x22[i] = 75, 40, 75
+                                x11[i], y1[i], x21[i], line[i] = 675, 685, 695, 4
+                                x12[i], y2[i], x22[i] = x12[i] + 62*rand, y2[i] + 62*rand, x22[i] + 62*rand
+                            
                         if a[i] == 20:
-                            stop[i] = True
+                                stop[i] = True
                         elif a[i] == 10:
-                            stop[i] = True
-                            Money[i] = Money[i] - 2000
+                                stop[i] = True
+                                Money[i] = Money[i] - 2000
                         elif a[i] == 30:
-                            a[i] = 10
-                            stop[i] = True
-                            Money[i] = Money[i] - 2000
-                            x11[i], x12[i], y1[i], y2[i], x21[i], x22[i] = 25, 695, 35, 660, 45, 695
+                                a[i] = 10
+                                stop[i] = True
+                                Money[i] = Money[i] - 2000
+                                x11[i], x12[i], y1[i], y2[i], x21[i], x22[i] = 25, 695, 35, 660, 45, 695
                         elif a[i] >= 40:
-                            Money[i] = Money[i] + 1500
+                                Money[i] = Money[i] + 1500
                         elif a[i] == 33 or a[i] == 17 or a[i] == 2:
-                            Money[i] = Money[i] + 3000
-                        elif a[i] == 12 or a[i] == 28:
-                            Money[i] = Money[i] - 1500
-                        
-                        if a[i] == 1 or a[i] == 3:
-                            if a[i] in active[x] or a[i] in active[y] or a[i] in active[z]:
-                                if a[i] in active[x]:
-                                    if 1 in active[x] and 3 in active[x]:
-                                        Money[i] = Money[i] - 200
-                                        Money[x] = Money[x] + 200
-                                    else:
-                                        Money[i] = Money[i] - 100
-                                        Money[x] = Money[x] + 100
-                                if a[i] in active[y]:
-                                    if 1 in active[y] and 3 in active[y]:
-                                        Money[i] = Money[i] - 200
-                                        Money[y] = Money[y] + 200
-                                    else:
-                                        Money[i] = Money[i] - 100
-                                        Money[y] = Money[y] + 100
-                                if a[i] in active[z]:
-                                    if 1 in active[z] and 3 in active[z]:
-                                        Money[i] = Money[i] - 200
-                                        Money[z] = Money[z] + 200
-                                    else:
-                                        Money[i] = Money[i] - 100
-                                        Money[z] = Money[z] + 100
-                            else:
-                                pygame.draw.rect(sc, BLACK, (840, 145, 70, 30))
-                                pygame.draw.rect(sc, BLACK, (920, 145, 115, 30))
-                                font = pygame.font.SysFont('stxingkai', 25)
-                                text1 = font.render("Цена 750, Купить    Отказаться", True, color[i])
+                                Money[i] = Money[i] + 3000
+                                font = pygame.font.SysFont('stxingkai', 30)
+                                text1 = font.render("Подарок, +3000", True, color[i])
                                 text_rect = text1.get_rect()
                                 text_x = 760
-                                text_y = 150
+                                text_y = 300
                                 sc.blit(text1, [text_x, text_y])
-                                if yes == 1:
-                                    yes = 0
-                                    if a[i] == 1:
-                                        active[i].append(1)
-                                        Money[i] = Money[i] - 750
-                                    elif a[i] == 3:
-                                        active[i].append(3)
-                                        Money[i] = Money[i] - 750 
+                                pygame.display.update()
+                        elif a[i] == 12 or a[i] == 28:
+                                Money[i] = Money[i] - 1500
+                                font = pygame.font.SysFont('stxingkai', 30)
+                                text1 = font.render("Ну минус 1500", True, color[i])
+                                text_rect = text1.get_rect()
+                                text_x = 760
+                                text_y = 300
+                                sc.blit(text1, [text_x, text_y])
+                                pygame.display.update()
                             
+                        if a[i] == 1 or a[i] == 3:
+                                if a[i] in active[x] or a[i] in active[y] or a[i] in active[z]:
+                                    if a[i] in active[x]:
+                                        if 1 in active[x] and 3 in active[x]:
+                                            Money[i] = Money[i] - 200
+                                            Money[x] = Money[x] + 200
+                                        else:
+                                            Money[i] = Money[i] - 100
+                                            Money[x] = Money[x] + 100
+                                    if a[i] in active[y]:
+                                        if 1 in active[y] and 3 in active[y]:
+                                            Money[i] = Money[i] - 200
+                                            Money[y] = Money[y] + 200
+                                        else:
+                                            Money[i] = Money[i] - 100
+                                            Money[y] = Money[y] + 100
+                                    if a[i] in active[z]:
+                                        if 1 in active[z] and 3 in active[z]:
+                                            Money[i] = Money[i] - 200
+                                            Money[z] = Money[z] + 200
+                                        else:
+                                            Money[i] = Money[i] - 100
+                                            Money[z] = Money[z] + 100
+                                else:
+                                    pygame.draw.rect(sc, BLACK, (840, 145, 70, 30))
+                                    pygame.draw.rect(sc, BLACK, (920, 145, 115, 30))
+                                    font = pygame.font.SysFont('stxingkai', 25)
+                                    text1 = font.render("Цена 750, Купить    Отказаться", True, color[i])
+                                    text_rect = text1.get_rect()
+                                    text_x = 760
+                                    text_y = 150
+                                    sc.blit(text1, [text_x, text_y])
+                                    text1 = font.render("Ходит " + str(ruscolor[i]) + " игрок, поле " + str(a[i]), True, color[i])
+                                    text2 = font.render("Баланс игрока " + str(Money[i]), True, color[i])
+                                    text_rect = text1.get_rect()
+                                    text_x = 760
+                                    text_y = 50
+                                    text_y2 = 80
+                                    sc.blit(text1, [text_x, text_y])
+                                    sc.blit(text2, [text_x, text_y2])
+                                    pygame.display.update()
+                                    loop = False
+                                    KEK = False
+                                    while not loop:
+                                        pygame.draw.polygon(sc, RED, [[x11[0], x12[0]], [y1[0], y2[0]], [x21[0], x22[0]]])
+                                        pygame.draw.polygon(sc, BLUE, [[x11[1], x12[1]], [y1[1], y2[1]], [x21[1], x22[1]]])
+                                        pygame.draw.polygon(sc, GREY, [[x11[2], x12[2]], [y1[2], y2[2]], [x21[2], x22[2]]])
+                                        pygame.draw.polygon(sc, GREEN, [[x11[3], x12[3]], [y1[3], y2[3]], [x21[3], x22[3]]])
+                                        pygame.display.update()
+                                        for event in pygame.event.get():
+                                            if event.type == pygame.QUIT:
+                                                pygame.quit()
+                                                sys.exit(0)
+                                                break
+                                            elif event.type == pygame.KEYDOWN:
+                                                loop = True
+                                            elif event.type == pygame.MOUSEBUTTONDOWN:
+                                                KEK = True
+                                        if KEK:
+                                            break
+                                    if loop:
+                                        yes = False
+                                        if a[i] == 1:
+                                            active[i].append(1)
+                                            Money[i] = Money[i] - 750
+                                        elif a[i] == 3:
+                                            active[i].append(3)
+                                            Money[i] = Money[i] - 750 
+                                        font = pygame.font.SysFont('stxingkai', 30)
+                                        text1 = font.render("Денюжки списаны", True, color[i])
+                                        text_rect = text1.get_rect()
+                                        text_x = 760
+                                        text_y = 300
+                                        sc.blit(text1, [text_x, text_y])
+                                        pygame.display.update()
+                        elif a[i] == 7 or a[i] == 22 or a[i] == 37:
+                            Chance = 0
+                            Chance = random.randint(1, 11)
+                            if Chance == 1:
+                                Money[i] += 1500
+                                font = pygame.font.SysFont('stxingkai', 25)
+                                text1 = font.render("Вы нашли клад, +1500", True, color[i])
+                                text_rect = text1.get_rect()
+                                text_x = 760
+                                text_y = 300
+                                sc.blit(text1, [text_x, text_y])
+                                pygame.display.update()  
+                            elif Chance == 2:
+                                Money[i] += 5000
+                                font = pygame.font.SysFont('stxingkai', 25)
+                                text1 = font.render("Наследство, +5000", True, color[i])
+                                text_rect = text1.get_rect()
+                                text_x = 760
+                                text_y = 300
+                                sc.blit(text1, [text_x, text_y])
+                                pygame.display.update()
+                            elif Chance == 3:
+                                Money[x] -= 300
+                                Money[y] -= 300
+                                Money[z] -= 300
+                                Money[i] += 900
+                                font = pygame.font.SysFont('stxingkai', 20)
+                                text1 = font.render("С днём рождения, все игроки дарят 300", True, color[i])
+                                text_rect = text1.get_rect()
+                                text_x = 760
+                                text_y = 300
+                                sc.blit(text1, [text_x, text_y])
+                                pygame.display.update()
+                            elif Chance == 4:
+                                a[i] = 0
+                                line[i] = 1
+                                x11[i], x12[i], y1[i], y2[i], x21[i], x22[i] = 675, 725, 685, 690, 695, 725
+                                font = pygame.font.SysFont('stxingkai', 30)
+                                text1 = font.render("На старт!", True, color[i])
+                                text_rect = text1.get_rect()
+                                text_x = 760
+                                text_y = 300
+                                sc.blit(text1, [text_x, text_y])
+                                pygame.display.update()
+                            elif Chance == 5:
+                                tax = len(active[i])*200
+                                Money[i] = Money[i] - tax
+                                font = pygame.font.SysFont('stxingkai', 25)
+                                text1 = font.render("Ремонт филиалов, 200 каждый", True, color[i])
+                                text_rect = text1.get_rect()
+                                text_x = 760
+                                text_y = 300
+                                sc.blit(text1, [text_x, text_y])
+                                pygame.display.update()
+                            elif Chance == 6:
+                                stop[i] = True
+                                font = pygame.font.SysFont('stxingkai', 25)
+                                text1 = font.render("Кури бамбук 1 ход", True, color[i])
+                                text_rect = text1.get_rect()
+                                text_x = 760
+                                text_y = 300
+                                sc.blit(text1, [text_x, text_y])
+                                pygame.display.update()
+                            elif Chance == 7:
+                                Money[i] = Money[i] - 2000
+                                font = pygame.font.SysFont('stxingkai', 22)
+                                text1 = font.render("Штраф 2000, за что? А просто, -2000", True, color[i])
+                                text_rect = text1.get_rect()
+                                text_x = 760
+                                text_y = 300
+                                sc.blit(text1, [text_x, text_y])
+                                pygame.display.update()
+                            elif Chance == 8:
+                                Money[i] += 1500
+                                font = pygame.font.SysFont('stxingkai', 22)
+                                text1 = font.render("Почтовый перевод от добрежелателей, +1500", True, color[i])
+                                text_rect = text1.get_rect()
+                                text_x = 760
+                                text_y = 300
+                                sc.blit(text1, [text_x, text_y])
+                                pygame.display.update()
+                            elif Chance == 9:
+                                Money[i] -= 1500
+                                font = pygame.font.SysFont('stxingkai', 27)
+                                text1 = font.render("Пожарная инспекция, -1500", True, color[i])
+                                text_rect = text1.get_rect()
+                                text_x = 760
+                                text_y = 300
+                                sc.blit(text1, [text_x, text_y])
+                                pygame.display.update()
+                            elif Chance == 10:
+                                Money[i] += 1000
+                                font = pygame.font.SysFont('stxingkai', 30)
+                                text1 = font.render("Держи косарь", True, color[i])
+                                text_rect = text1.get_rect()
+                                text_x = 760
+                                text_y = 300
+                                sc.blit(text1, [text_x, text_y])
+                                pygame.display.update()
+                            elif Chance == 11:
+                                font = pygame.font.SysFont('stxingkai', 27)
+                                text1 = font.render("Пустышка! В следующий раз", True, color[i])
+                                text_rect = text1.get_rect()
+                                text_x = 760
+                                text_y = 300
+                                sc.blit(text1, [text_x, text_y])
+                                pygame.display.update()
                         elif a[i] == 4 or a[i] == 38:
                             if a[i] == 4:
                                 tax = len(active[i])*300 
                             else:
                                 tax = len(active[i])*500
-                            Money[i] = Money[i] - tax     
+                            Money[i] = Money[i] - tax
+                            font = pygame.font.SysFont('stxingkai', 30)
+                            text1 = font.render("Налоги!", True, color[i])
+                            text_rect = text1.get_rect()
+                            text_x = 760
+                            text_y = 300
+                            sc.blit(text1, [text_x, text_y])
+                            pygame.display.update()     
 
                         elif a[i] == 6 or a[i] == 8 or a[i] == 9:
                             if a[i] in active[x] or a[i] in active[y] or a[i] in active[z]:
@@ -244,6 +406,7 @@ while True:
                                         Money[i] = Money[i] - 300
                                         Money[z] = Money[z] + 300
                             else:
+                                pygame.display.update()
                                 pygame.draw.rect(sc, BLACK, (850, 145, 70, 30))
                                 pygame.draw.rect(sc, BLACK, (930, 145, 115, 30))
                                 font = pygame.font.SysFont('stxingkai', 25)
@@ -252,8 +415,35 @@ while True:
                                 text_x = 760
                                 text_y = 150
                                 sc.blit(text1, [text_x, text_y])
-                                if yes == 1:
-                                    yes = 0
+                                text1 = font.render("Ходит " + str(ruscolor[i]) + " игрок, поле " + str(a[i]), True, color[i])
+                                text2 = font.render("Баланс игрока " + str(Money[i]), True, color[i])
+                                text_rect = text1.get_rect()
+                                text_x = 760
+                                text_y = 50
+                                text_y2 = 80
+                                sc.blit(text1, [text_x, text_y])
+                                sc.blit(text2, [text_x, text_y2])
+                                pygame.display.update()
+                                loop = False
+                                KEK = False
+                                while not loop:
+                                        pygame.draw.polygon(sc, RED, [[x11[0], x12[0]], [y1[0], y2[0]], [x21[0], x22[0]]])
+                                        pygame.draw.polygon(sc, BLUE, [[x11[1], x12[1]], [y1[1], y2[1]], [x21[1], x22[1]]])
+                                        pygame.draw.polygon(sc, GREY, [[x11[2], x12[2]], [y1[2], y2[2]], [x21[2], x22[2]]])
+                                        pygame.draw.polygon(sc, GREEN, [[x11[3], x12[3]], [y1[3], y2[3]], [x21[3], x22[3]]])
+                                        pygame.display.update()
+                                        for event in pygame.event.get():
+                                            if event.type == pygame.QUIT:
+                                                pygame.quit()
+                                                sys.exit(0)
+                                                break
+                                            elif event.type == pygame.KEYDOWN:
+                                                loop = True
+                                            elif event.type == pygame.MOUSEBUTTONDOWN:
+                                                KEK = True
+                                        if KEK:
+                                            break
+                                if loop:
                                     if a[i] == 6:
                                         active[i].append(6)
                                         Money[i] = Money[i] - 1000
@@ -263,7 +453,14 @@ while True:
                                     elif a[i] == 9:
                                         active[i].append(9)
                                         Money[i] = Money[i] - 1000 
-                            
+                                    font = pygame.font.SysFont('stxingkai', 30)
+                                    text1 = font.render("Денюжки списаны", True, color[i])
+                                    text_rect = text1.get_rect()
+                                    text_x = 760
+                                    text_y = 300
+                                    sc.blit(text1, [text_x, text_y])
+                                    pygame.display.update()
+                                
                         elif a[i] == 11 or a[i] == 13 or a[i] == 14:
                             if a[i] in active[x] or a[i] in active[y] or a[i] in active[z]:
                                 if a[i] in active[x]:
@@ -305,8 +502,36 @@ while True:
                                 text_x = 760
                                 text_y = 150
                                 sc.blit(text1, [text_x, text_y])
-                                if yes == 1:
-                                    yes = 0
+                                text1 = font.render("Ходит " + str(ruscolor[i]) + " игрок, поле " + str(a[i]), True, color[i])
+                                text2 = font.render("Баланс игрока " + str(Money[i]), True, color[i])
+                                text_rect = text1.get_rect()
+                                text_x = 760
+                                text_y = 50
+                                text_y2 = 80
+                                sc.blit(text1, [text_x, text_y])
+                                sc.blit(text2, [text_x, text_y2])
+                                pygame.display.update()
+                                loop = False
+                                KEK = False
+                                while not loop:
+                                        pygame.draw.polygon(sc, RED, [[x11[0], x12[0]], [y1[0], y2[0]], [x21[0], x22[0]]])
+                                        pygame.draw.polygon(sc, BLUE, [[x11[1], x12[1]], [y1[1], y2[1]], [x21[1], x22[1]]])
+                                        pygame.draw.polygon(sc, GREY, [[x11[2], x12[2]], [y1[2], y2[2]], [x21[2], x22[2]]])
+                                        pygame.draw.polygon(sc, GREEN, [[x11[3], x12[3]], [y1[3], y2[3]], [x21[3], x22[3]]])
+                                        pygame.display.update()
+                                        for event in pygame.event.get():
+                                            if event.type == pygame.QUIT:
+                                                pygame.quit()
+                                                sys.exit(0)
+                                                break
+                                            elif event.type == pygame.KEYDOWN:
+                                                loop = True
+                                            elif event.type == pygame.MOUSEBUTTONDOWN:
+                                                KEK = True
+                                        if KEK:
+                                            break
+                                if loop:
+                                    yes = False
                                     if a[i] == 11:
                                         active[i].append(11)
                                         Money[i] = Money[i] - 1250
@@ -316,6 +541,13 @@ while True:
                                     elif a[i] == 14:
                                         active[i].append(14)
                                         Money[i] = Money[i] - 1250 
+                                    font = pygame.font.SysFont('stxingkai', 30)
+                                    text1 = font.render("Денюжки списаны", True, color[i])
+                                    text_rect = text1.get_rect()
+                                    text_x = 760
+                                    text_y = 300
+                                    sc.blit(text1, [text_x, text_y])
+                                    pygame.display.update()
 
                         elif a[i] == 16 or a[i] == 18 or a[i] == 19:
                             if a[i] in active[x] or a[i] in active[y] or a[i] in active[z]:
@@ -358,8 +590,37 @@ while True:
                                 text_x = 760
                                 text_y = 150
                                 sc.blit(text1, [text_x, text_y])
-                                if yes == 1:
-                                    yes = 0
+                                text1 = font.render("Ходит " + str(ruscolor[i]) + " игрок, поле " + str(a[i]), True, color[i])
+                                text2 = font.render("Баланс игрока " + str(Money[i]), True, color[i])
+                                text_rect = text1.get_rect()
+                                text_x = 760
+                                text_y = 50
+                                text_y2 = 80
+                                sc.blit(text1, [text_x, text_y])
+                                sc.blit(text2, [text_x, text_y2])
+                                pygame.display.update()
+                                loop = False
+                                KEK = False
+                                while not loop:
+                                        pygame.draw.polygon(sc, RED, [[x11[0], x12[0]], [y1[0], y2[0]], [x21[0], x22[0]]])
+                                        pygame.draw.polygon(sc, BLUE, [[x11[1], x12[1]], [y1[1], y2[1]], [x21[1], x22[1]]])
+                                        pygame.draw.polygon(sc, GREY, [[x11[2], x12[2]], [y1[2], y2[2]], [x21[2], x22[2]]])
+                                        pygame.draw.polygon(sc, GREEN, [[x11[3], x12[3]], [y1[3], y2[3]], [x21[3], x22[3]]])
+                                        pygame.display.update()
+                                        for event in pygame.event.get():
+                                            if event.type == pygame.QUIT:
+                                                pygame.quit()
+                                                sys.exit(0)
+                                                break
+                                            elif event.type == pygame.KEYDOWN:
+                                                loop = True
+                                            elif event.type == pygame.MOUSEBUTTONDOWN:
+                                                KEK = True
+                                        if KEK:
+                                            break
+                                            
+                                if loop:
+                                    yes = False
                                     if a[i] == 16:
                                         active[i].append(16)
                                         Money[i] = Money[i] - 2000
@@ -369,6 +630,13 @@ while True:
                                     elif a[i] == 19:
                                         active[i].append(9)
                                         Money[i] = Money[i] - 2000
+                                    font = pygame.font.SysFont('stxingkai', 30)
+                                    text1 = font.render("Денюжки списаны", True, color[i])
+                                    text_rect = text1.get_rect()
+                                    text_x = 760
+                                    text_y = 300
+                                    sc.blit(text1, [text_x, text_y])
+                                    pygame.display.update()
 
                         elif a[i] == 21 or a[i] == 23 or a[i] == 24:
                             if a[i] in active[x] or a[i] in active[y] or a[i] in active[z]:
@@ -411,8 +679,35 @@ while True:
                                 text_x = 760                                    
                                 text_y = 150
                                 sc.blit(text1, [text_x, text_y])
-                                if yes == 1:
-                                    yes = 0
+                                text1 = font.render("Ходит " + str(ruscolor[i]) + " игрок, поле " + str(a[i]), True, color[i])
+                                text2 = font.render("Баланс игрока " + str(Money[i]), True, color[i])
+                                text_rect = text1.get_rect()
+                                text_x = 760
+                                text_y = 50
+                                text_y2 = 80
+                                sc.blit(text1, [text_x, text_y])
+                                sc.blit(text2, [text_x, text_y2])
+                                pygame.display.update()
+                                loop = False
+                                KEK = False
+                                while not loop:
+                                        pygame.draw.polygon(sc, RED, [[x11[0], x12[0]], [y1[0], y2[0]], [x21[0], x22[0]]])
+                                        pygame.draw.polygon(sc, BLUE, [[x11[1], x12[1]], [y1[1], y2[1]], [x21[1], x22[1]]])
+                                        pygame.draw.polygon(sc, GREY, [[x11[2], x12[2]], [y1[2], y2[2]], [x21[2], x22[2]]])
+                                        pygame.draw.polygon(sc, GREEN, [[x11[3], x12[3]], [y1[3], y2[3]], [x21[3], x22[3]]])
+                                        pygame.display.update()
+                                        for event in pygame.event.get():
+                                            if event.type == pygame.QUIT:
+                                                pygame.quit()
+                                                sys.exit(0)
+                                                break
+                                            elif event.type == pygame.KEYDOWN:
+                                                loop = True
+                                            elif event.type == pygame.MOUSEBUTTONDOWN:
+                                                KEK = True
+                                        if KEK:
+                                            break
+                                if loop:
                                     if a[i] == 21:
                                         active[i].append(21)
                                         Money[i] = Money[i] - 3000
@@ -422,6 +717,13 @@ while True:
                                     elif a[i] == 24:
                                         active[i].append(24)
                                         Money[i] = Money[i] - 3000  
+                                    font = pygame.font.SysFont('stxingkai', 30)
+                                    text1 = font.render("Денюжки списаны", True, color[i])
+                                    text_rect = text1.get_rect()
+                                    text_x = 760
+                                    text_y = 300
+                                    sc.blit(text1, [text_x, text_y])
+                                    pygame.display.update()
                             
                         elif a[i] == 26 or a[i] == 27 or a[i] == 29:
                             if a[i] in active[x] or a[i] in active[y] or a[i] in active[z]:
@@ -464,8 +766,36 @@ while True:
                                 text_x = 760
                                 text_y = 150
                                 sc.blit(text1, [text_x, text_y])
-                                if yes == 1:
-                                    yes = 0
+                                text1 = font.render("Ходит " + str(ruscolor[i]) + " игрок, поле " + str(a[i]), True, color[i])
+                                text2 = font.render("Баланс игрока " + str(Money[i]), True, color[i])
+                                text_rect = text1.get_rect()
+                                text_x = 760
+                                text_y = 50
+                                text_y2 = 80
+                                sc.blit(text1, [text_x, text_y])
+                                sc.blit(text2, [text_x, text_y2])
+                                pygame.display.update()
+                                loop = False
+                                KEK = False
+                                while not loop:
+                                        pygame.draw.polygon(sc, RED, [[x11[0], x12[0]], [y1[0], y2[0]], [x21[0], x22[0]]])
+                                        pygame.draw.polygon(sc, BLUE, [[x11[1], x12[1]], [y1[1], y2[1]], [x21[1], x22[1]]])
+                                        pygame.draw.polygon(sc, GREY, [[x11[2], x12[2]], [y1[2], y2[2]], [x21[2], x22[2]]])
+                                        pygame.draw.polygon(sc, GREEN, [[x11[3], x12[3]], [y1[3], y2[3]], [x21[3], x22[3]]])
+                                        pygame.display.update()
+                                        for event in pygame.event.get():
+                                            if event.type == pygame.QUIT:
+                                                pygame.quit()
+                                                sys.exit(0)
+                                                break
+                                            elif event.type == pygame.KEYDOWN:
+                                                loop = True
+                                            elif event.type == pygame.MOUSEBUTTONDOWN:
+                                                KEK = True
+                                        if KEK:
+                                            break
+                                if loop:
+                                    yes = False
                                     if a[i] == 26:
                                         active[i].append(26)
                                         Money[i] = Money[i] - 4000
@@ -475,6 +805,13 @@ while True:
                                     elif a[i] == 29:
                                         active[i].append(29)
                                         Money[i] = Money[i] - 4000
+                                    font = pygame.font.SysFont('stxingkai', 30)
+                                    text1 = font.render("Денюжки списаны", True, color[i])
+                                    text_rect = text1.get_rect()
+                                    text_x = 760
+                                    text_y = 300
+                                    sc.blit(text1, [text_x, text_y])
+                                    pygame.display.update()
 
                         elif a[i] == 31 or a[i] == 32 or a[i] == 34:
                             if a[i] in active[x] or a[i] in active[y] or a[i] in active[z]:
@@ -517,8 +854,36 @@ while True:
                                 text_x = 760
                                 text_y = 150
                                 sc.blit(text1, [text_x, text_y])
-                                if yes == 1:
-                                    yes = 0
+                                text1 = font.render("Ходит " + str(ruscolor[i]) + " игрок, поле " + str(a[i]), True, color[i])
+                                text2 = font.render("Баланс игрока " + str(Money[i]), True, color[i])
+                                text_rect = text1.get_rect()
+                                text_x = 760
+                                text_y = 50
+                                text_y2 = 80
+                                sc.blit(text1, [text_x, text_y])
+                                sc.blit(text2, [text_x, text_y2])
+                                pygame.display.update()
+                                loop = False
+                                KEK = False
+                                while not loop:
+                                        pygame.draw.polygon(sc, RED, [[x11[0], x12[0]], [y1[0], y2[0]], [x21[0], x22[0]]])
+                                        pygame.draw.polygon(sc, BLUE, [[x11[1], x12[1]], [y1[1], y2[1]], [x21[1], x22[1]]])
+                                        pygame.draw.polygon(sc, GREY, [[x11[2], x12[2]], [y1[2], y2[2]], [x21[2], x22[2]]])
+                                        pygame.draw.polygon(sc, GREEN, [[x11[3], x12[3]], [y1[3], y2[3]], [x21[3], x22[3]]])
+                                        pygame.display.update()
+                                        for event in pygame.event.get():
+                                            if event.type == pygame.QUIT:
+                                                pygame.quit()
+                                                sys.exit(0)
+                                                break
+                                            elif event.type == pygame.KEYDOWN:
+                                                loop = True
+                                            elif event.type == pygame.MOUSEBUTTONDOWN:
+                                                KEK = True
+                                        if KEK:
+                                            break
+                                if loop:
+                                    yes = False
                                     if a[i] == 31:
                                         active[i].append(31)
                                         Money[i] = Money[i] - 5000
@@ -528,6 +893,13 @@ while True:
                                     elif a[i] == 34:
                                         active[i].append(34)
                                         Money[i] = Money[i] - 5000
+                                    font = pygame.font.SysFont('stxingkai', 30)
+                                    text1 = font.render("Денюжки списаны", True, color[i])
+                                    text_rect = text1.get_rect()
+                                    text_x = 760
+                                    text_y = 300
+                                    sc.blit(text1, [text_x, text_y])
+                                    pygame.display.update()
 
                         elif a[i] == 37 or a[i] == 39:
                             if a[i] in active[x] or a[i] in active[y] or a[i] in active[z]:
@@ -561,17 +933,48 @@ while True:
                                 text_x = 760
                                 text_y = 150
                                 sc.blit(text1, [text_x, text_y])
-                                if yes == 1:
-                                    yes = 0
+                                text1 = font.render("Ходит " + str(ruscolor[i]) + " игрок, поле " + str(a[i]), True, color[i])
+                                text2 = font.render("Баланс игрока " + str(Money[i]), True, color[i])
+                                text_rect = text1.get_rect()
+                                text_x = 760
+                                text_y = 50
+                                text_y2 = 80
+                                sc.blit(text1, [text_x, text_y])
+                                sc.blit(text2, [text_x, text_y2])
+                                pygame.display.update()
+                                loop = False
+                                KEK = False
+                                while not loop:
+                                        pygame.draw.polygon(sc, RED, [[x11[0], x12[0]], [y1[0], y2[0]], [x21[0], x22[0]]])
+                                        pygame.draw.polygon(sc, BLUE, [[x11[1], x12[1]], [y1[1], y2[1]], [x21[1], x22[1]]])
+                                        pygame.draw.polygon(sc, GREY, [[x11[2], x12[2]], [y1[2], y2[2]], [x21[2], x22[2]]])
+                                        pygame.draw.polygon(sc, GREEN, [[x11[3], x12[3]], [y1[3], y2[3]], [x21[3], x22[3]]])
+                                        pygame.display.update()
+                                        for event in pygame.event.get():
+                                            if event.type == pygame.QUIT:
+                                                pygame.quit()
+                                                sys.exit(0)
+                                                break
+                                            elif event.type == pygame.KEYDOWN:
+                                                loop = True
+                                            elif event.type == pygame.MOUSEBUTTONDOWN:
+                                                KEK = True
+                                        if KEK:
+                                            break
+                                if loop:
                                     if a[i] == 37:
                                         active[i].append(37)
                                         Money[i] = Money[i] - 6000
                                     elif a[i] == 39:
                                         active[i].append(39)
                                         Money[i] = Money[i] - 6000 
-
-                        pygame.display.update()
-                                    
+                                    font = pygame.font.SysFont('stxingkai', 30)
+                                    text1 = font.render("Денюжки списаны", True, color[i])
+                                    text_rect = text1.get_rect()
+                                    text_x = 760
+                                    text_y = 300
+                                    sc.blit(text1, [text_x, text_y])
+                                    pygame.display.update()
 
 
                         font = pygame.font.SysFont('stxingkai', 25)
@@ -583,6 +986,8 @@ while True:
                         text_y2 = 80
                         sc.blit(text1, [text_x, text_y])
                         sc.blit(text2, [text_x, text_y2])
+                        yes = False
+                        pas = False
                         pygame.display.update()
                         
 
@@ -590,6 +995,7 @@ while True:
 
 
                         
+                    print(active)
                     pygame.time.wait(1000)
 
                     pygame.draw.rect(sc, WHITE, (345, 250, 30, 30))
