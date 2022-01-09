@@ -7,6 +7,17 @@ sc = pygame.display.set_mode((1200,900))
 pygame.display.set_caption("Танки")
 pygame.display.flip()
 
+L4 = [3, 4, 5, 6, 7, 8]
+L3 = [1, 2, 3, 4, 5, 6, 7]
+L2 = [1, 2, 3, 4, 5, 6, 7]
+L1 = [0, 1, 2, 3, 4, 7, 8, 9, 10, 11]
+gunX = 0
+gunY = 0
+goUP = False
+goDW = False
+goRT = False
+goLT = False
+
 WHITE = (255, 255, 255)
 RED = (225, 0, 50)
 GREEN = (0, 225, 0)
@@ -18,7 +29,7 @@ x = 550
 y = 800
 tankUp = True
 tankR = False
-TankL = False
+tankL = False
 tankD = False
 game_over = False
 block = pygame.image.load(r'F:\PyGame\png\block.png')
@@ -33,33 +44,20 @@ while True:
             pygame.quit()
             sys.exit(0)
             break
-    sc.blit(block, [0,100])
-    sc.blit(block, [100,100])
-    sc.blit(block, [200,100])
-    sc.blit(block, [300,100])
-    sc.blit(block, [400,100])
-
-    sc.blit(block, [1100,100])
-    sc.blit(block, [1000,100])
-    sc.blit(block, [900,100])
-    sc.blit(block, [800,100])
-    sc.blit(block, [700,100])
-
-    sc.blit(block, [400,100])
-    sc.blit(block, [400,200-23*2])
-    sc.blit(block, [400,300-23*3])
-    sc.blit(block, [400,400-23*4])
-    sc.blit(block, [400,500-23*5])
-    sc.blit(block, [400,600-23*6])
-    sc.blit(block, [400,700-23*7])
-
-    sc.blit(block, [700,100])
-    sc.blit(block, [700,200-23*2])
-    sc.blit(block, [700,300-23*3])
-    sc.blit(block, [700,400-23*4])
-    sc.blit(block, [700,500-23*5])
-    sc.blit(block, [700,600-23*6])
-    sc.blit(block, [700,700-23*7])
+    for i in L1:
+        sc.blit(block, [i*100,100])
+    for i in L2:
+        if i == 1:
+            sc.blit(block, [400,100])
+        else:
+            sc.blit(block, [400,i*100-23*i])
+    for i in L3:
+        if i == 1:
+            sc.blit(block, [700,100])
+        else:
+            sc.blit(block, [700,i*100-23*i])
+    for i in L4:
+        sc.blit(block, [i*100,900-20*9])
 
     sc.blit(block, [800,400-23*4])
     sc.blit(block, [900,400-23*4])
@@ -71,47 +69,65 @@ while True:
     sc.blit(block, [300,700-23*7])
     sc.blit(block, [200,700-23*7])
 
-    sc.blit(block, [300,900-20*9])
-    sc.blit(block, [400,900-20*9])
-    sc.blit(block, [500,900-20*9])
-    sc.blit(block, [600,900-20*9])
-    sc.blit(block, [700,900-20*9])
-    sc.blit(block, [800,900-20*9])
-
+    keys = pygame.key.get_pressed()
     if tankUp:
         sc.blit(tank, [x, y])
+        if keys[pygame.K_SPACE]:
+            goUP = True
+            goDW, goLT, goRT = False, False, False
+            gunX = x+50
+            gunY = y
     elif tankR:
         sc.blit(tank1, [x, y])
+        if keys[pygame.K_SPACE]:
+            goRT = True
+            goDW, goLT, goUP = False, False, False
+            gunX = x+100
+            gunY = y+50
     elif tankD:
         sc.blit(tank2, [x, y])
-    elif TankL:
+        if keys[pygame.K_SPACE]:
+            goDW = True
+            goUP, goLT, goRT = False, False, False
+            gunX = x+50
+            gunY = y+100
+    elif tankL:
         sc.blit(tank3, [x, y])
+        if keys[pygame.K_SPACE]:
+            goLT = True
+            goDW, goUP, goRT = False, False, False
+            gunX = x
+            gunY = y+50
 
-    keys = pygame.key.get_pressed()
     if keys[pygame.K_LEFT]:
-        x -= 5
-        tankUp = False
-        tankR = False
-        TankL = True
-        tankD = False
+        if x>0:
+            x -= 5
+            tankUp, tankR, tankL, tankD = False, False, True, False
     if keys[pygame.K_RIGHT]:
-        x += 5
-        tankUp = False
-        tankR = True
-        TankL = False
-        tankD = False
+        if x<1110:
+            x += 5
+            tankUp, tankR, tankL, tankD = False, True, False, False
     if keys[pygame.K_UP]:
-        y -= 5
-        tankUp = True
-        tankR = False
-        TankL = False
-        tankD = False
+        if y>0:
+            y -= 5
+            tankUp, tankR, tankL, tankD = True, False, False, False
     if keys[pygame.K_DOWN]:
-        y += 5
-        tankUp = False
-        tankR = False
-        TankL = False
-        tankD = True
+        if y<800:
+            y += 5
+            tankUp, tankR, tankL, tankD = False, False, False, True
+    if goUP:
+        pygame.draw.circle(sc, YELLOW, (gunX, gunY), 15)
+        gunY -= 5
+    elif goRT:
+        pygame.draw.circle(sc, YELLOW, (gunX, gunY), 15)
+        gunX += 5
+    elif goDW:
+        pygame.draw.circle(sc, YELLOW, (gunX, gunY), 15)
+        gunY += 5
+    elif goLT:
+        pygame.draw.circle(sc, YELLOW, (gunX, gunY), 15)
+        gunX -= 5
+
 
     pygame.display.update()
     sc.fill(BLACK)
