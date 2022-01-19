@@ -77,6 +77,79 @@ def nazvanie(stop, Y, l):
         stop = False
     return stop 
 
+def nazvanie2(stop, Y, l):
+    if x<100:
+        a = "0"
+    elif x>1000:
+        a = str(x)
+        a = a[:2]
+    else:
+        a = str(x)
+        a = a[0]
+    if int(a) in l or int(a)+1 in l:
+        prov1 = True
+    else:
+        prov1 = False
+    if y+100 in range(Y, Y+75):
+        prov2 = True
+    else:
+        prov2 = False
+    if prov1 and prov2:
+        stop = True
+    else:
+        stop = False
+    return stop
+
+def nazvanie3(stop, Y, l):
+    global x
+    if y in range(Y, Y+75) or y+75 in range(Y, Y+75):
+        prov1 = True
+    else:
+        prov1 = False
+    if x<100:
+        a = "0"
+    elif x>1000:
+        a = str(x)
+        a = a[:2]
+    else:
+        a = str(x)
+        a = a[0]
+    if int(a) in l:
+        prov2 = True
+    else:
+        prov2 = False
+    if prov1 and prov2:
+        stop = True
+        x+=1
+    else:
+        stop = False    
+    return stop
+
+def nazvanie4(stop, Y, l):
+    global x
+    if y in range(Y, Y+75) or y+75 in range(Y, Y+75):
+        prov1 = True
+    else:
+        prov1 = False
+    if x<100:
+        a = "0"
+    elif x>1000:
+        a = str(x)
+        a = a[:2]
+    else:
+        a = str(x)
+        a = a[0]
+    if int(a)+1 in l:
+        prov2 = True
+    else:
+        prov2 = False
+    if prov1 and prov2:
+        stop = True
+        x-=1
+    else:
+        stop = False    
+    return stop
+
 while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -103,6 +176,20 @@ while True:
         upStop = True
     else:
         upStop = False
+    if nazvanie2(dwStop, y1, L1) or nazvanie2(dwStop, y2, L2) or nazvanie2(dwStop, y3, L3) or nazvanie2(dwStop, y4, L4) or nazvanie2(dwStop, y5, L5) or nazvanie2(dwStop, y6, L6) or nazvanie2(dwStop, y7, L7) or nazvanie2(dwStop, y8, L8):
+        dwStop = True
+    else:
+        dwStop = False
+    if nazvanie3(ltStop, y1, L1) or nazvanie3(ltStop, y2, L2) or nazvanie3(ltStop, y3, L3) or nazvanie3(ltStop, y4, L4) or nazvanie3(ltStop, y5, L5) or nazvanie3(ltStop, y6, L6) or nazvanie3(ltStop, y7, L7) or nazvanie3(ltStop, y8, L8):
+        ltStop = True
+    else:
+        ltStop = False
+    if nazvanie4(rtStop, y1, L1) or nazvanie4(rtStop, y2, L2) or nazvanie4(rtStop, y3, L3) or nazvanie4(rtStop, y4, L4) or nazvanie4(rtStop, y5, L5) or nazvanie4(rtStop, y6, L6) or nazvanie4(rtStop, y7, L7) or nazvanie4(rtStop, y8, L8):
+        rtStop = True
+    else:
+        rtStop = False
+
+
 
     keys = pygame.key.get_pressed()
     if tankUp:
@@ -135,11 +222,11 @@ while True:
             gunY = y+50
 
     if keys[pygame.K_LEFT]:
-        if x>0:
+        if x>0 and not ltStop:
             x -= 5
             tankUp, tankR, tankL, tankD = False, False, True, False
     if keys[pygame.K_RIGHT]:
-        if x<1110:
+        if x<1110 and not rtStop:
             x += 5
             tankUp, tankR, tankL, tankD = False, True, False, False
     if keys[pygame.K_UP]:
@@ -147,7 +234,7 @@ while True:
             y -= 5
             tankUp, tankR, tankL, tankD = True, False, False, False
     if keys[pygame.K_DOWN]:
-        if y<800:
+        if y<800 and not dwStop:
             y += 5
             tankUp, tankR, tankL, tankD = False, False, False, True
     if goUP:
