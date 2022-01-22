@@ -30,6 +30,8 @@ goDW = False
 goRT = False
 goLT = False
 
+gunCount = 0
+
 upStop = False
 dwStop = False
 rtStop = False
@@ -42,6 +44,10 @@ BLUE = (0, 0, 225)
 BLACK = (0,0,0)
 GREY = (128,128,128)
 YELLOW = (255, 255, 0)
+corXU, corXD, corXL, corXR = [], [], [], []
+corYU, corYD, corYL, corYR = [], [], [], []
+copyU, copyD, copyL, copyR = [], [], [], []
+
 x = 550
 y = 800
 tankUp = True
@@ -54,6 +60,10 @@ tank = pygame.image.load(r'F:\PyGame\png\tank.png')
 tank1 = pygame.image.load(r'F:\PyGame\png\tank1.png')
 tank2 = pygame.image.load(r'F:\PyGame\png\tank2.png')
 tank3 = pygame.image.load(r'F:\PyGame\png\tank3.png')
+snaryad = pygame.image.load(r'F:\PyGame\png\snaryad.png')
+snaryadR = pygame.image.load(r'F:\PyGame\png\snaryadR.png')
+snaryadD = pygame.image.load(r'F:\PyGame\png\snaryadD.png')
+snaryadL = pygame.image.load(r'F:\PyGame\png\snaryadL.png')
 def nazvanie(stop, Y, l):
     if x<100:
         a = "0"
@@ -195,65 +205,124 @@ while True:
     if tankUp:
         sc.blit(tank, [x, y])
         if keys[pygame.K_SPACE]:
-            goUP = True
-            goDW, goLT, goRT = False, False, False
-            gunX = x+50
-            gunY = y
+            if gunCount >= 40:
+                gunCount = 0
+                corXU.append(x+25)
+                corYU.append(y-45)
     elif tankR:
         sc.blit(tank1, [x, y])
         if keys[pygame.K_SPACE]:
-            goRT = True
-            goDW, goLT, goUP = False, False, False
-            gunX = x+100
-            gunY = y+50
+            if gunCount >= 40:
+                gunCount = 0
+                corXR.append(x+100)
+                corYR.append(y+25)
     elif tankD:
         sc.blit(tank2, [x, y])
         if keys[pygame.K_SPACE]:
-            goDW = True
-            goUP, goLT, goRT = False, False, False
-            gunX = x+50
-            gunY = y+100
+            if gunCount >= 40:
+                gunCount = 0
+                corXD.append(x+25)
+                corYD.append(y+100)
     elif tankL:
         sc.blit(tank3, [x, y])
         if keys[pygame.K_SPACE]:
-            goLT = True
-            goDW, goUP, goRT = False, False, False
-            gunX = x
-            gunY = y+50
+            if gunCount >= 40:
+                gunCount = 0
+                corXL.append(x-45)
+                corYL.append(y+25)
 
     if keys[pygame.K_LEFT]:
         if x>0 and not ltStop:
-            x -= 5
+            x -= 3
             tankUp, tankR, tankL, tankD = False, False, True, False
     if keys[pygame.K_RIGHT]:
         if x<1110 and not rtStop:
-            x += 5
+            x += 3
             tankUp, tankR, tankL, tankD = False, True, False, False
     if keys[pygame.K_UP]:
         if y>0 and not upStop:
-            y -= 5
+            y -= 3
             tankUp, tankR, tankL, tankD = True, False, False, False
     if keys[pygame.K_DOWN]:
         if y<800 and not dwStop:
-            y += 5
+            y += 3
             tankUp, tankR, tankL, tankD = False, False, False, True
-    if goUP:
-        pygame.draw.circle(sc, YELLOW, (gunX, gunY), 15)
-        gunY -= 5
-    elif goRT:
-        pygame.draw.circle(sc, YELLOW, (gunX, gunY), 15)
-        gunX += 5
-    elif goDW:
-        pygame.draw.circle(sc, YELLOW, (gunX, gunY), 15)
-        gunY += 5
-    elif goLT:
-        pygame.draw.circle(sc, YELLOW, (gunX, gunY), 15)
-        gunX -= 5
+
+    for i, j in enumerate(corYU):
+        sc.blit(snaryad, [corXU[i], j])
+    for j in corYU:
+        copyU.append(j-4)
+    corYU = []
+    corYU = copyU.copy()
+    copyU.clear()
+    for d, i in enumerate(corYU):
+        if i > 0:
+            copyU.append(i)
+        else:
+            corXU.pop(d)
+    corYU.clear()
+    corYU = copyU.copy()
+    copyU.clear()
+
+    ###
+
+    for i, j in enumerate(corYD):
+        sc.blit(snaryadD, [corXD[i], j])
+    for j in corYD:
+        copyD.append(j+4)
+    corYD = []
+    corYD = copyD.copy()
+    copyD.clear()
+    for d, i in enumerate(corYD):
+        if i < 1200:
+            copyD.append(i)
+        else:
+            corXD.pop(d)
+    corYD.clear()
+    corYD = copyD.copy()
+    copyD.clear()
+
+    ###
+
+    for i, j in enumerate(corYL):
+        sc.blit(snaryadL, [corXL[i], j])
+    for j in corXL:
+        copyL.append(j-4)
+    corXL = []
+    corXL = copyL.copy()
+    copyL.clear()
+    for d, i in enumerate(corXL):
+        if i > 0:
+            copyL.append(i)
+        else:
+            corYL.pop(d)
+    corXL.clear()
+    corXL = copyL.copy()
+    copyL.clear()
+
+    ###
+
+    for i, j in enumerate(corYR):
+        sc.blit(snaryadR, [corXR[i], j])
+    for j in corXR:
+        copyR.append(j+4)
+    corXR = []
+    corXR = copyR.copy()
+    copyR.clear()
+    for d, i in enumerate(corXR):
+        if i > 0:
+            copyR.append(i)
+        else:
+            corYR.pop(d)
+    corXR.clear()
+    corXR = copyR.copy()
+    copyR.clear()
 
 
     pygame.display.update()
     sc.fill(BLACK)
-
+    pygame.time.delay(1)
+    gunCount += 1
 
 
         
